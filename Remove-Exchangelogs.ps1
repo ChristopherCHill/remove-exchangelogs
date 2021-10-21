@@ -68,14 +68,15 @@ Function Get-UnifiedContentfileSize()
             $SizeGBRounded = [math]::Round($SizeGB,2)
             return $SizeGBRounded
         }
-        Else 
+        else 
         {
             Write-Output "The folder $TargetFolder doesn't exist! Check the folder path!"
         }
     }
 }
 # Remove the logs
-Function Remove-Logfiles() {
+Function Remove-Logfiles() 
+{
     PARAM(
         [Parameter(Mandatory=$true)]
             [String[]]$TargetFolder
@@ -115,7 +116,7 @@ Function Remove-UnifiedContent()
                 Remove-Item -force -ea 0
             return $FileCount
         }
-        Else 
+        else 
         {
             Write-Output "The folder $TargetFolder doesn't exist! Check the folder path!"
         }
@@ -134,10 +135,10 @@ if (-not (Confirm-Administrator))
 
 # Get logs and traces and write some stats
 $IISLogSize = Get-LogfileSize $IISLogPath
-$ExchangeLogSize = Get-LogfileSize $ExchangeLoggingPath
-$ETL1LogSize = Get-LogfileSize $ETLLoggingPath
-$ETL2LogSize = Get-LogfileSize $ETLLoggingPath2
-$UnifiedContentSize = Get-UnifiedContentfileSize $UnifiedContentPath
+$ExchangeLogSize = Get-LogfileSize -TargetFolder $ExchangeLoggingPath
+$ETL1LogSize = Get-LogfileSize -TargetFolder $ETLLoggingPath
+$ETL2LogSize = Get-LogfileSize -TargetFolder $ETLLoggingPath2
+$UnifiedContentSize = Get-UnifiedContentfileSize -TargetFolder $UnifiedContentPath
 $TotalLogSize = $IISLogSize + $ExchangeLogSize + $ETL1LogSize + $ETL2LogSize + $UnifiedContentSize
 
 Write-Output "Total Log and Trace File Size is $TotalLogSize GB"
@@ -157,11 +158,11 @@ while($Confirmation -notmatch "[yYnN]")
 # Delete logs (if confirmed) and write some stats
 if ($Confirmation -match "[yY]") 
 {
-    $DeleteIISFiles = Remove-Logfiles $IISLogPath
-    $DeleteExchangeLogs = Remove-Logfiles $ExchangeLoggingPath
-    $DeleteETL1Logs = Remove-Logfiles $ETLLoggingPath
-    $DeleteETL2Logs = Remove-Logfiles $ETLLoggingPath2
-    $DeleteUnifiedContent = Remove-UnifiedContent $UnifiedContentPath
+    $DeleteIISFiles = Remove-Logfiles -TargetFolder $IISLogPath
+    $DeleteExchangeLogs = Remove-Logfiles-TargetFolder  $ExchangeLoggingPath
+    $DeleteETL1Logs = Remove-Logfiles -TargetFolder $ETLLoggingPath
+    $DeleteETL2Logs = Remove-Logfiles -TargetFolder $ETLLoggingPath2
+    $DeleteUnifiedContent = Remove-UnifiedContent -TargetFolder $UnifiedContentPath
     $TotalDeletedFiles = $DeleteIISFiles + $DeleteExchangeLogs + $DeleteETL1Logs + $DeleteETL2Logs + $DeleteUnifiedContent
     Write-Output "$TotalDeletedFiles files deleted"
 }
