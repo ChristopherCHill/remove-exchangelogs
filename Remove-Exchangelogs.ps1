@@ -19,24 +19,21 @@ Function Get-LogfileSize()
         [Parameter(Mandatory=$true)]
             [String[]]$TargetFolder
     )
-    PROCESS {
-        if (Test-Path $TargetFolder) 
-        {
-            $Now = Get-Date
-            $LastWrite = $Now.AddDays(-$days)
-            $Files = Get-ChildItem $TargetFolder -Recurse | 
-                Where-Object { $_.Name -like "*.log" -or $_.Name -like "*.blg" -or $_.Name -like "*.etl" } |
-                Where-Object { $_.lastWriteTime -le "$lastwrite" }
-            $SizeGB = ($Files | Measure-Object -Sum Length).Sum / 1GB
-            $SizeGBRounded = [math]::Round($SizeGB,2)
-            return $SizeGBRounded
-        }
-        else
-        {
-            Write-Output "The folder $TargetFolder doesn't exist! Check the folder path!"
-        }    
+    if (Test-Path $TargetFolder) 
+    {
+        $Now = Get-Date
+        $LastWrite = $Now.AddDays(-$days)
+        $Files = Get-ChildItem $TargetFolder -Recurse | 
+            Where-Object { $_.Name -like "*.log" -or $_.Name -like "*.blg" -or $_.Name -like "*.etl" } |
+            Where-Object { $_.lastWriteTime -le "$lastwrite" }
+        $SizeGB = ($Files | Measure-Object -Sum Length).Sum / 1GB
+        $SizeGBRounded = [math]::Round($SizeGB,2)
+        return $SizeGBRounded
     }
-
+    else
+    {
+        Write-Output "The folder $TargetFolder doesn't exist! Check the folder path!"
+    }    
 }
 Function Get-UnifiedContentfileSize() 
 {
@@ -44,21 +41,19 @@ Function Get-UnifiedContentfileSize()
         [Parameter(Mandatory=$true)]
             [String[]]$TargetFolder
     )
-    PROCESS {
-        if (Test-Path $TargetFolder) 
-        {
-            $Now = Get-Date
-            $LastWrite = $Now.AddDays(-$days)
-            $Files = Get-ChildItem $TargetFolder -Recurse | 
-                Where-Object { $_.lastWriteTime -le "$lastwrite" }
-            $SizeGB = ($Files | Measure-Object -Sum Length).Sum / 1GB
-            $SizeGBRounded = [math]::Round($SizeGB,2)
-            return $SizeGBRounded
-        }
-        else 
-        {
-            Write-Output "The folder $TargetFolder doesn't exist! Check the folder path!"
-        }
+    if (Test-Path $TargetFolder) 
+    {
+        $Now = Get-Date
+        $LastWrite = $Now.AddDays(-$days)
+        $Files = Get-ChildItem $TargetFolder -Recurse | 
+            Where-Object { $_.lastWriteTime -le "$lastwrite" }
+        $SizeGB = ($Files | Measure-Object -Sum Length).Sum / 1GB
+        $SizeGBRounded = [math]::Round($SizeGB,2)
+        return $SizeGBRounded
+    }
+    else 
+    {
+        Write-Output "The folder $TargetFolder doesn't exist! Check the folder path!"
     }
 }
 # Remove the logs
@@ -68,20 +63,18 @@ Function Remove-Logfiles()
         [Parameter(Mandatory=$true)]
             [String[]]$TargetFolder
     )
-    PROCESS {
-        if (Test-Path $TargetFolder) 
-        {
-            $Now = Get-Date
-            $LastWrite = $Now.AddDays(-$days)
-            $Files = Get-ChildItem $TargetFolder -Recurse | Where-Object { $_.Name -like "*.log" -or $_.Name -like "*.blg" -or $_.Name -like "*.etl" } | Where-Object { $_.lastWriteTime -le "$lastwrite" }
-            $FileCount = $Files.Count
-            $Files | Remove-Item -force -ea 0
-            return $FileCount
-        }
-        Else 
-        {
-            Write-Output "The folder $TargetFolder doesn't exist! Check the folder path!"
-        }
+    if (Test-Path $TargetFolder) 
+    {
+        $Now = Get-Date
+        $LastWrite = $Now.AddDays(-$days)
+        $Files = Get-ChildItem $TargetFolder -Recurse | Where-Object { $_.Name -like "*.log" -or $_.Name -like "*.blg" -or $_.Name -like "*.etl" } | Where-Object { $_.lastWriteTime -le "$lastwrite" }
+        $FileCount = $Files.Count
+        $Files | Remove-Item -force -ea 0
+        return $FileCount
+    }
+    Else 
+    {
+        Write-Output "The folder $TargetFolder doesn't exist! Check the folder path!"
     }
 }
 
@@ -91,22 +84,20 @@ Function Remove-UnifiedContent()
         [Parameter(Mandatory=$true)]
             [String[]]$TargetFolder
     )
-    PROCESS {
-        if (Test-Path $TargetFolder) 
-        {
-            $Now = Get-Date
-            $LastWrite = $Now.AddDays(-$days)
-            $Files = Get-ChildItem $TargetFolder -Recurse | 
-                Where-Object { $_.lastWriteTime -le "$lastwrite" }
-            $FileCount = $Files.Count
-            $Files | 
-                Remove-Item -force -ea 0
-            return $FileCount
-        }
-        else 
-        {
-            Write-Output "The folder $TargetFolder doesn't exist! Check the folder path!"
-        }
+    if (Test-Path $TargetFolder) 
+    {
+        $Now = Get-Date
+        $LastWrite = $Now.AddDays(-$days)
+        $Files = Get-ChildItem $TargetFolder -Recurse | 
+            Where-Object { $_.lastWriteTime -le "$lastwrite" }
+        $FileCount = $Files.Count
+        $Files | 
+            Remove-Item -force -ea 0
+        return $FileCount
+    }
+    else 
+    {
+        Write-Output "The folder $TargetFolder doesn't exist! Check the folder path!"
     }
 }
 #endregion Functions
