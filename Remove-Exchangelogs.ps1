@@ -1,3 +1,4 @@
+#Requires -RunAsAdministrator
 #region Variables 
 # Cleanup logs older than the set of days in numbers
 $Days = 14
@@ -11,20 +12,6 @@ $UnifiedContentPath = "C:\Program Files\Microsoft\Exchange Server\V15\TransportR
 #endregion
 
 #region Functions
-# Test if evelated Shell
-Function Confirm-Administrator() 
-{
-    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) 
-    {
-        return $true
-    } 
-    else 
-    {
-        return $false
-    }
-}
-
 # Get size of all logfiles
 Function Get-LogfileSize() 
 {
