@@ -102,15 +102,6 @@ Function Remove-UnifiedContent()
 }
 #endregion Functions
 
-if (-not (Confirm-Administrator)) 
-{
-    Write-Output $msgNewLine
-    Write-Warning "This script needs to be executed in elevated mode. Start the Exchange Management Shell as an Administrator and try again."
-    $Error.Clear()
-    Start-Sleep -Seconds 2
-    exit
-}
-
 # Get logs and traces and write some stats
 $IISLogSize = Get-LogfileSize $IISLogPath
 $ExchangeLogSize = Get-LogfileSize -TargetFolder $ExchangeLoggingPath
