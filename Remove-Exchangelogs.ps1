@@ -130,7 +130,7 @@ while($Confirmation -notmatch "[yYnN]")
 if ($Confirmation -match "[yY]") 
 {
     $DeleteIISFiles = Remove-Logfiles -TargetFolder $IISLogPath
-    $DeleteExchangeLogs = Remove-Logfiles-TargetFolder  $ExchangeLoggingPath
+    $DeleteExchangeLogs = Remove-Logfiles -TargetFolder $ExchangeLoggingPath
     $DeleteETL1Logs = Remove-Logfiles -TargetFolder $ETLLoggingPath
     $DeleteETL2Logs = Remove-Logfiles -TargetFolder $ETLLoggingPath2
     $DeleteUnifiedContent = Remove-UnifiedContent -TargetFolder $UnifiedContentPath
