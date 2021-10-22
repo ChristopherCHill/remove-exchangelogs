@@ -11,9 +11,9 @@ $ETLLoggingPath2 = "C:\Program Files\Microsoft\Exchange Server\V15\Bin\Search\Ce
 $UnifiedContentPath = "C:\Program Files\Microsoft\Exchange Server\V15\TransportRoles\data\Temp\UnifiedContent"
 #endregion
 
-#region Functions
+#region functions
 # Get size of all logfiles
-Function Get-LogfileSize() 
+function Get-LogfileSize() 
 {
     PARAM(
         [Parameter(Mandatory=$true)]
@@ -22,7 +22,7 @@ Function Get-LogfileSize()
     if (Test-Path -Path $TargetFolder) 
     {
         $Now = Get-Date
-        $LastWrite = $Now.AddDays(-$days)
+        $LastWrite = $Now.AddDays(-$Days)
         $Files = Get-ChildItem -Path $TargetFolder -Recurse | 
             Where-Object { $_.Name -like "*.log" -or $_.Name -like "*.blg" -or $_.Name -like "*.etl" } |
             Where-Object { $_.lastWriteTime -le "$lastwrite" }
@@ -35,7 +35,7 @@ Function Get-LogfileSize()
         Write-Output "The folder $TargetFolder doesn't exist! Check the folder path!"
     }    
 }
-Function Get-UnifiedContentfileSize() 
+function Get-UnifiedContentfileSize() 
 {
     PARAM(
         [Parameter(Mandatory=$true)]
@@ -57,7 +57,7 @@ Function Get-UnifiedContentfileSize()
     }
 }
 # Remove the logs
-Function Remove-Logfiles() 
+function Remove-Logfiles() 
 {
     PARAM(
         [Parameter(Mandatory=$true)]
@@ -80,7 +80,7 @@ Function Remove-Logfiles()
     }
 }
 
-Function Remove-UnifiedContent() 
+function Remove-UnifiedContent() 
 {
     PARAM(
         [Parameter(Mandatory=$true)]
@@ -102,10 +102,10 @@ Function Remove-UnifiedContent()
         Write-Output "The folder $TargetFolder doesn't exist! Check the folder path!"
     }
 }
-#endregion Functions
+#endregion functions
 
 # Get logs and traces and write some stats
-$IISLogSize = Get-LogfileSize $IISLogPath
+$IISLogSize = Get-LogfileSize -TargetFolder $IISLogPath
 $ExchangeLogSize = Get-LogfileSize -TargetFolder $ExchangeLoggingPath
 $ETL1LogSize = Get-LogfileSize -TargetFolder $ETLLoggingPath
 $ETL2LogSize = Get-LogfileSize -TargetFolder $ETLLoggingPath2
